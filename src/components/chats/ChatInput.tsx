@@ -175,6 +175,7 @@ function ChatInput() {
                 <button
                     className="flex items-center justify-center rounded-r-md bg-primary p-2 text-black"
                     type="submit"
+                    title="Send Message"
                 >
                     <LuSendHorizontal size={24} />
                 </button>
