@@ -174,8 +174,8 @@ import { auth } from "./firebaseConfig";
 import Toast from "./components/toast/Toast";
 import HomePage from "./pages/HomePage";
 import EditorPage from "./pages/EditorPage";
-import Login from "./login";
-import SignUp from "./signup";
+import Login from "./api/auth/login";
+import SignUp from "./api/auth/signup";
 
 const App = () => {
   const [user, setUser] = useState<User | null>(null);

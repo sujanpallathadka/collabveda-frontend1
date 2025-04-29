@@ -1,8 +1,5 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "./firebaseConfig";
-import { createUserWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
@@ -11,21 +8,6 @@ const Signup = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
-
-  const getErrorMessage = (errorCode: string): string => {
-    switch (errorCode) {
-      case 'auth/invalid-email':
-        return 'The email address is not valid.';
-      case 'auth/email-already-in-use':
-        return 'This email is already registered.';
-      case 'auth/weak-password':
-        return 'Password should be at least 6 characters.';
-        case 'auth/invalid-credential':
-            return 'Invalid credentials. Please check your email and password.';
-      default:
-        return 'An unknown error occurred. Please try again later.';
-    }
-  };
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,10 +19,26 @@ const Signup = () => {
     }
 
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/login"); // Redirect to login page after successful signup
-    } catch (err: any) {
-      setError(getErrorMessage(err.code)); // Calling getErrorMessage to use the custom message
+      const response = await fetch("https://your-backend-domain.com/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Signup failed");
+        return;
+      }
+
+      // On success, navigate to login page
+      navigate("/login");
+
+    } catch (err) {
+      setError("An error occurred. Please try again.");
     }
   };
 

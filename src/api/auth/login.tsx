@@ -1,8 +1,5 @@
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth } from "./firebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -11,30 +8,32 @@ const Login = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const getErrorMessage = (errorCode: string): string => {
-    switch (errorCode) {
-      case 'auth/invalid-email':
-        return 'The email address is not valid.';
-      case 'auth/user-not-found':
-        return 'No account found with this email.';
-      case 'auth/wrong-password':
-        return 'Incorrect password. Please try again.';
-      case 'auth/invalid-credential':
-        return 'Invalid credentials. Please check your email and password.';
-      default:
-        return 'An unknown error occurred. Please try again later.';
-    }
-  };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const response = await fetch("https://your-backend-domain.com/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || "Login failed");
+        return;
+      }
+
+      // Optionally store token in localStorage or cookie
+      localStorage.setItem("authToken", data.token); // if backend returns token
       navigate("/home");
-    } catch (err: any) {
-      setError(getErrorMessage(err.code)); // Calling getErrorMessage to use the custom message
+
+    } catch (err) {
+      setError("An error occurred. Please try again.");
     }
   };
 
