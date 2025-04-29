@@ -46,6 +46,7 @@ function SplitterComponent({ children }: { children: ReactNode[] }) {
             cursor="e-resize"
             snapOffset={30}
             onDrag={handleGutterDrag}
+            gutter={getGutter}
             className="flex h-screen min-h-screen max-w-full items-center justify-center overflow-hidden"
         >
             {children.map((child, index) =>

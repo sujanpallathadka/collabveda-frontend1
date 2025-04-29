@@ -1,6 +1,6 @@
 import ChatInput from "@/components/chats/ChatInput";
 import ChatList from "@/components/chats/ChatList";
-import VoiceChat from "@/components/chats/VoiceChat"; // Import VoiceChat component
+
 import useResponsive from "@/hooks/useResponsive";
 
 const ChatsView = () => {
@@ -21,8 +21,7 @@ const ChatsView = () => {
                 <ChatList />
             </div>
 
-            {/* Voice Chat Widget */}
-            <VoiceChat />
+           
 
             {/* Chat Input */}
             <div className="border-t border-blue-500 pt-2">
